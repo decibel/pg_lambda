@@ -124,6 +124,18 @@ forcedist: forcetag dist
 # To use this, do make print-VARIABLE_NAME
 print-%	: ; $(info $* is [${$*}])@echo -n
 
+#
+# subtree sync support
+#
+# This is setup to allow any number of pull targets by defining special
+# variables. pgxntool-sync-release is an example of this.
+.PHONY: pgxn-sync-%
+pgxntool-sync-%:
+	git subtree pull -P pgxntool $@
+
+pgxntool-sync-release	:= git@github.com:decibel/pgxntool.git release
+pgxntool-sync-dev		:= git@github.com:decibel/pgxntool.git master
+pgxntool-sync-local		:= ../pgxntool.git master
+pgxntool-sync: pgxntool-sync-release
+
 include $(PGXS)
-
-
