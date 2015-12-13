@@ -135,7 +135,7 @@ pgxntool-sync-%:
 
 pgxntool-sync-release	:= git@github.com:decibel/pgxntool.git release
 pgxntool-sync-dev		:= git@github.com:decibel/pgxntool.git master
-pgxntool-sync-local		:= ../pgxntool.git master
+pgxntool-sync-local		:= ../pgxntool master
 pgxntool-sync: pgxntool-sync-release
 
 include $(PGXS)
