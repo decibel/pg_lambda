@@ -17,7 +17,8 @@ META_parse2	= $(call json_parse,META.json,$(1),$(2))
 # '["..."]' by json_parse_cmd.
 META_extversion	= $(call META_parse,provides$(json_sep)$(1)$(json_sep)version)
 
-JSON_SH := ./JSON.sh
+PGXNTOOL_DIR := pgxntool
+JSON_SH := $(PGXNTOOL_DIR)/JSON.sh
 
 PGXN		:= $(call META_parse,name)
 PGXNVERSION	:= $(call META_parse,version)
