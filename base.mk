@@ -115,7 +115,10 @@ tag:
 .PHONY: forcetag
 forcetag: rmtag tag
 
-dist: tag
+.PHONY: dist
+dist: tag dist-only
+
+dist-only:
 	git archive --prefix=$(PGXN)-$(PGXNVERSION)/ -o ../$(PGXN)-$(PGXNVERSION).zip $(PGXNVERSION)
 
 .PHONY: forcedist
