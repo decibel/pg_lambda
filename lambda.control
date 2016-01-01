@@ -1,0 +1,3 @@
+comment = 'Lambda function for Postgres'
+default_version = '0.9.0'
+relocatable = true
