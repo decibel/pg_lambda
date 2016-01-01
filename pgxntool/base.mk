@@ -44,6 +44,9 @@ $(foreach ext,$(EXTENSIONS),$(eval $(call extension--version_rule,$(ext))))
 
 DATA         = $(filter-out $(wildcard sql/*-*-*.sql),$(wildcard sql/*.sql))
 DOCS         = $(wildcard doc/*.asc)
+ifeq ($(strip $(DOCS)),)
+DOCS =# Set to NUL so PGXS doesn't puke
+endif
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test --load-language=plpgsql
