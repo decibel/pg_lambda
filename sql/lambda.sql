@@ -67,8 +67,4 @@ BEGIN
 END
 $body$;
 
---SELECT pg_sleep(5);
-
-SELECT lambda( $L1$(float,float) RETURNS float LANGUAGE sql AS $$SELECT $1 + $2$$$L1$, 1.0, 2.1);
-
 -- vi: expandtab ts=2 sw=2
