@@ -128,7 +128,7 @@ dist-only:
 forcedist: forcetag dist
 
 # To use this, do make print-VARIABLE_NAME
-print-%	: ; $(info $* is [${$*}])@echo -n
+print-%	: ; $(info $* is $(flavor ${$*}) variable set to [${$*}])@echo -n
 
 #
 # subtree sync support
