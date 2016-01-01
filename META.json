@@ -1,0 +1,26 @@
+{
+    "name": "pg_lambda",
+    "abstract": "Lambda function for Postgres",
+    "version": "0.9.0",
+    "maintainer": "Jim C. Nasby <Jim.Nasby@BlueTreble.com>",
+    "license": {"BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"},
+    "provides": {
+        "lambda": {
+            "abstract": "Lambda function for Postgres",
+            "file": "sql/lambda.sql",
+            "version": "0.9.0"
+        }
+    },
+    "release_status": "beta",
+
+    "generated_by": "Jim C. Nasby <Jim.Nasby@BlueTreble.com>",
+
+    "tags": [ "function", "functions", "plpgsql", "pl/pgsql", "lambda" ],
+
+    "meta-spec": {
+        "version": "1.0.0",
+        "url": "http://pgxn.org/meta/spec.txt"
+    },
+
+    "X_vi": "vi: expandtab ts=4 sw=4"
+}
