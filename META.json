@@ -8,6 +8,7 @@
         "lambda": {
             "abstract": "Lambda function for Postgres",
             "file": "sql/lambda.sql",
+            "docfile": "README.asc",
             "version": "0.9.0"
         }
     },
