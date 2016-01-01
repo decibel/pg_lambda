@@ -144,4 +144,6 @@ pgxntool-sync-dev		:= git@github.com:decibel/pgxntool.git master
 pgxntool-sync-local		:= ../pgxntool master
 pgxntool-sync: pgxntool-sync-release
 
+ifndef PGXNTOOL_NO_PGXS_INCLUDE
 include $(PGXS)
+endif
