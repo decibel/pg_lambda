@@ -137,11 +137,12 @@ print-%	: ; $(info $* is $(flavor ${$*}) variable set to [${$*}])@echo -n
 # variables. pgxntool-sync-release is an example of this.
 .PHONY: pgxn-sync-%
 pgxntool-sync-%:
-	git subtree pull -P pgxntool $($@)
+	git subtree pull -P pgxntool --squash -m "Pull pgxntool from $($@)" $($@)
 
 pgxntool-sync-release	:= git@github.com:decibel/pgxntool.git release
-pgxntool-sync-dev		:= git@github.com:decibel/pgxntool.git master
-pgxntool-sync-local		:= ../pgxntool master
+pgxntool-sync-local		:= ../pgxntool release
+# NOTE! If you pull anything other than release you're likely to get a bunch of
+# stuff you don't want in your history!
 pgxntool-sync: pgxntool-sync-release
 
 ifndef PGXNTOOL_NO_PGXS_INCLUDE
