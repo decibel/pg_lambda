@@ -20,8 +20,8 @@ META_extversion	= $(call META_parse,provides$(json_sep)$(1)$(json_sep)version)
 PGXNTOOL_DIR := pgxntool
 JSON_SH := $(PGXNTOOL_DIR)/JSON.sh
 
-PGXN		:= $(call META_parse,name)
-PGXNVERSION	:= $(call META_parse,version)
+PGXN		= $(call META_parse,name)
+PGXNVERSION	= $(call META_parse,version)
 
 # Get list of all extensions defined in META.json
 # The second argument first expands to 'provides","[^"]*', which after
@@ -30,7 +30,7 @@ PGXNVERSION	:= $(call META_parse,version)
 #
 # This ultimately has the effect of finding every key name under the provides
 # object in META.json.
-EXTENSIONS	:= $(call META_parse2,provides$(json_sep)[^$(dquote)]*,-d\$(dquote) -f4)
+EXTENSIONS	= $(call META_parse2,provides$(json_sep)[^$(dquote)]*,-d\$(dquote) -f4)
 
 define extension--version_rule
 EXTENSION_$(1)_VERSION		:= $(call META_extversion,$(1))
@@ -39,7 +39,8 @@ EXTENSION_VERSION_FILES		+= $$(EXTENSION_$(1)_VERSION_FILE)
 $$(EXTENSION_$(1)_VERSION_FILE): sql/$(1).sql META.json
 	cp $$< $$@
 endef
-$(foreach ext,$(EXTENSIONS),$(eval $(call extension--version_rule,$(ext))))
+$(foreach ext,$(EXTENSIONS),$(eval $(call extension--version_rule,$(ext)))): META.json
+# TODO: Add support for creating .control files
 #$(foreach ext,$(EXTENSIONS),$(info $(call extension--version_rule,$(ext))))
 
 DATA         = $(EXTENSION_VERSION_FILES)
@@ -47,15 +48,18 @@ DOCS         = $(wildcard doc/*.asc)
 ifeq ($(strip $(DOCS)),)
 DOCS =# Set to NUL so PGXS doesn't puke
 endif
-TESTS        = $(wildcard test/sql/*.sql)
-REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
-REGRESS_OPTS = --inputdir=test --load-language=plpgsql
-#
-# Uncoment the MODULES line if you are adding C files
-# to your extention.
-#
-#MODULES      = $(patsubst %.c,%,$(wildcard src/*.c))
-PG_CONFIG    = pg_config
+
+PG_CONFIG   ?= pg_config
+TESTDIR		?= test
+TESTOUT		?= $(TESTDIR)
+TEST_FILES	+= $(notdir $(wildcard $(TESTDIR)/input/*.source))
+TEST_FILES	+= $(notdir $(wildcard $(TESTDIR)/sql/*.sql))
+REGRESS		 = $(sort $(subst .source,,$(subst .sql,,$(TEST_FILES)))) # Sort is to get unique list
+REGRESS_OPTS = --inputdir=$(TESTDIR) --outputdir=$(TESTOUT) --load-language=plpgsql
+MODULES      = $(patsubst %.c,%,$(wildcard src/*.c))
+ifeq ($(strip $(MODULES)),)
+MODULES =# Set to NUL so PGXS doesn't puke
+endif
 
 EXTRA_CLEAN  = $(wildcard ../$(PGXN)-*.zip) $(EXTENSION_VERSION_FILES)
 
@@ -83,13 +87,13 @@ DATA += $(wildcard *.control)
 .IGNORE: installcheck
 
 #
-# pgtap
+# META.json
 #
-.PHONY: pgtap
-pgtap: $(DESTDIR)$(datadir)/extension/pgtap.control
-
-$(DESTDIR)$(datadir)/extension/pgtap.control:
-	pgxn install pgtap
+all: META.json
+META.json: META.in.json pgxntool/build_meta.sh
+	pgxntool/build_meta.sh $< $@
+distclean:
+	rm -f META.json
 
 #
 # testdeps
@@ -99,17 +103,18 @@ testdeps: pgtap
 
 .PHONY: test
 test: clean testdeps install installcheck
-	@if [ -r regression.diffs ]; then cat regression.diffs; fi
+	@if [ -r $(TESTOUT)/regression.diffs ]; then cat $(TESTOUT)/regression.diffs; fi
 
 .PHONY: results
 results: test
-	rsync -rlpgovP results/ test/expected
+	rsync -rlpgovP $(TESTOUT)/results/ $(TESTDIR)/expected
 
 rmtag:
 	git fetch origin # Update our remotes
 	@test -z "$$(git branch --list $(PGXNVERSION))" || git branch -d $(PGXNVERSION)
 	@test -z "$$(git branch --list -r origin/$(PGXNVERSION))" || git push --delete origin $(PGXNVERSION)
 
+# TODO: Don't puke if tag already exists *and is the same*
 tag:
 	@test -z "$$(git status --porcelain)" || (echo 'Untracked changes!'; echo; git status; exit 1)
 	git branch $(PGXNVERSION)
@@ -127,8 +132,16 @@ dist-only:
 .PHONY: forcedist
 forcedist: forcetag dist
 
+# Target to list all targets
+# http://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
+.PHONY: no_targets__ list
+no_targets__:
+list:
+	sh -c "$(MAKE) -p no_targets__ | awk -F':' '/^[a-zA-Z0-9][^\$$#\/\\t=]*:([^=]|$$)/ {split(\$$1,A,/ /);for(i in A)print A[i]}' | grep -v '__\$$' | sort"
+
 # To use this, do make print-VARIABLE_NAME
-print-%	: ; $(info $* is $(flavor ${$*}) variable set to [${$*}])@echo -n
+print-%	: ; $(info $* is $(flavor $*) variable set to "$($*)") @true
+
 
 #
 # subtree sync support
@@ -147,4 +160,17 @@ pgxntool-sync: pgxntool-sync-release
 
 ifndef PGXNTOOL_NO_PGXS_INCLUDE
 include $(PGXS)
-endif
+#
+# pgtap
+#
+# NOTE! This currently MUST be after PGXS! The problem is that
+# $(DESTDIR)$(datadir) aren't being expanded. This can probably change after
+# the META handling stuff is it's own makefile.
+#
+.PHONY: pgtap
+pgtap: $(DESTDIR)$(datadir)/extension/pgtap.control
+
+$(DESTDIR)$(datadir)/extension/pgtap.control:
+	pgxn install pgtap
+
+endif # fndef PGXNTOOL_NO_PGXS_INCLUDE
