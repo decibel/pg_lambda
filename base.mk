@@ -43,7 +43,7 @@ $(foreach ext,$(EXTENSIONS),$(eval $(call extension--version_rule,$(ext)))): MET
 # TODO: Add support for creating .control files
 #$(foreach ext,$(EXTENSIONS),$(info $(call extension--version_rule,$(ext))))
 
-DATA         = $(filter-out $(wildcard sql/*-*-*.sql),$(wildcard sql/*.sql))
+DATA         = $(EXTENSION_VERSION_FILES)
 DOCS         = $(wildcard doc/*.asc)
 ifeq ($(strip $(DOCS)),)
 DOCS =# Set to NUL so PGXS doesn't puke
@@ -75,7 +75,7 @@ GE91		 = $(call test, $(MAJORVER), -ge, 91)
 ifeq ($(GE91),yes)
 all: $(EXTENSION_VERSION_FILES)
 
-DATA = $(wildcard sql/*--*.sql)
+#DATA = $(wildcard sql/*--*.sql)
 endif
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
