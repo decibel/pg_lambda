@@ -1,7 +1,7 @@
 {
     "name": "pg_lambda",
     "abstract": "Lambda function for Postgres",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "maintainer": "Jim C. Nasby <Jim.Nasby@BlueTreble.com>",
     "license": {"BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"},
     "provides": {
@@ -9,7 +9,7 @@
             "abstract": "Lambda function for Postgres",
             "file": "sql/lambda.sql",
             "docfile": "README.asc",
-            "version": "1.0.0"
+            "version": "1.0.1"
         }
     },
     "release_status": "stable",
