@@ -1,0 +1,23 @@
+# Editor files
+.*.swp
+
+# Explicitly exclude META.json!
+!/META.json
+
+# Compiler output
+*.o
+*.so
+.deps/
+
+# built targets
+/sql/*--*
+!/sql/*--*--*.sql
+
+# Test artifacts
+results/
+regression.diffs
+regression.out
+
+# Misc
+tmp/
+.DS_Store
