@@ -1,27 +1,98 @@
 {
+    "X_comment": "REQUIRED. Name of distribution.",
+    "X_comment": "Note! Distribution names currently can't contain spaces.",
     "name": "pg_lambda",
-    "abstract": "Lambda function for Postgres",
+
+    "X_comment": "REQUIRED. Version of the distribution. http://pgxn.org/spec/#version",
     "version": "1.0.3",
+
+    "X_comment": "REQUIRED. Short description of distribution.",
+    "abstract": "Lambda function for Postgres",
+
+    "X_comment": "Optional. \"description\": A longer description of the distribution. http://pgxn.org/spec/#description",
+    "description": "Provides the ability to execute arbitrary function code, as well as returning a value.",
+
+    "X_comment": "REQUIRED. Contact info for distribution maintainers. http://pgxn.org/spec/#maintainer",
     "maintainer": "Jim C. Nasby <Jim.Nasby@BlueTreble.com>",
-    "license": {"BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"},
-    "provides": {
-        "lambda": {
-            "abstract": "Lambda function for Postgres",
-            "file": "sql/lambda.sql",
-            "docfile": "README.asc",
-            "version": "1.0.1"
-        }
-    },
+
+    "X_comment": "Optional. Status of distribution. Allowed values: unstable, testing, stable",
     "release_status": "stable",
 
-    "generated_by": "Jim C. Nasby <Jim.Nasby@BlueTreble.com>",
+    "X_comment": "REQUIRED. License(s) distribution is released under. http://pgxn.org/spec/#license",
+    "license": {"BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"},
+
+    "X_comment": "REQUIRED. Specifies extensions contained in this distribution. Each key is the name of an extension. http://pgxn.org/spec/#provides",
+    "X_comment": "Note! Extension names currently can't contain spaces.",
+    "provides": {
+        "lambda": {
+            "X_comment": "REQUIRED. File containing extension.",
+            "file": "sql/lambda.sql",
+
+            "X_comment": "REQUIRED. Version the extension is at.",
+            "version": "1.0.1",
+
+            "X_comment": "Optional: \"abstract\": Description of the extension.",
+            "abstract": "Lambda function for Postgres",
+
+            "X_comment": "Optional: \"docfile\": filesystem path to document file for extension.",
+            "docfile": "README.asc",
+
+            "X_end": ""
+        }
+    },
+
 
     "tags": [ "function", "functions", "plpgsql", "lambda" ],
 
+    "resources": {
+        "homepage": "http://github.com/decibel/pg_lambda/",
+        "bugtracker": {
+            "web": "http://github.com/decibel/pg_lambda/issues"
+        },
+        "repository": {
+            "url": "git://github.com/decibel/pg_lambda.git",
+            "web": "http://github.com/decibel/pg_lambda/",
+            "type": "git"
+        }
+    },
+
+    "X_comment": "Optional. 'prereqs': Prerequisits for the distribution. http://pgxn.org/spec/#prereqs",
+    "X_comment": "Valid keys for 'prereqs' are configure, build, runtime, or test.",
+    "X_comment": "Valid keys for 'requires' are requires, recommends, suggests, or conflicts.",
+    "X_comment": "Requires Postgres 9.4+ due to use of multi-array unnest().",
+    "prereqs": {
+
+        "build": {
+            "requires": {
+                "PostgreSQL": "9.4.0"
+            }
+        },
+        "runtime": {
+            "requires": {
+                "plpgsql": 0
+            }
+        },
+        "test": {
+            "requires": {
+                "pgtap": 0
+            }
+        }
+    },
+
+    "X_comment": "Unusual. \"no_index\": Files/directories that should not be indexed. http://pgxn.org/spec/#no_index",
+    "no_index": "",
+
+    "X_comment": "Unusual. Package/tool used to generate this file.",
+    "generated_by": "pgxntool https://github.com/decibel/pgxntool",
+
+    "X_comment": "REQUIRED. Version info for this file. http://pgxn.org/spec/#meta-spec",
     "meta-spec": {
         "version": "1.0.0",
         "url": "http://pgxn.org/meta/spec.txt"
     },
 
-    "X_vi": "vi: expandtab ts=4 sw=4"
+    "X_comment": "Here for good formatting in vi.",
+    "X_vi": "vi: expandtab ts=4 sw=4",
+    
+    "X_end": ""
 }
