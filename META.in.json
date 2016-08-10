@@ -4,7 +4,7 @@
     "name": "pg_lambda",
 
     "X_comment": "REQUIRED. Version of the distribution. http://pgxn.org/spec/#version",
-    "version": "1.0.3",
+    "version": "1.0.4",
 
     "X_comment": "REQUIRED. Short description of distribution.",
     "abstract": "Lambda function for Postgres",
