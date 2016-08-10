@@ -4,6 +4,9 @@
 # Explicitly exclude META.json!
 !/META.json
 
+# Generated make files
+meta.mk
+
 # Compiler output
 *.o
 *.so

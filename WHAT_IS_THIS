@@ -1,0 +1,6 @@
+In order not to confuse the PGXN search tools, documentation for pgxntool is
+not included in releases.
+
+To learn more about what pgxntool is, please see
+
+https://github.com/decibel/pgxntool

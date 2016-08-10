@@ -1,9 +1,14 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -o errexit -o errtrace -o pipefail
 trap 'echo "Error on line ${LINENO}"' ERR
 
 [ -d .git ] || git init
+
+if ! git diff --cached --exit-code; then
+    echo "Git repository is not clean; please commit and try again." >&2
+    exit 1
+fi
 
 safecreate () {
     file=$1
@@ -44,6 +49,7 @@ cd test
 safecp ../pgxntool/test/deps.sql deps.sql
 [ -d pgxntool ] || ln -s ../pgxntool/test/pgxntool .
 git add pgxntool
+git status
 
 echo "If you won't be creating C code then you can:
 
