@@ -27,7 +27,7 @@ cat << _PRE_ > $out
 
 _PRE_
 
-# Pattern is mean to match ': "" ,' or ': [ "", ' where spaces are optional.
+# Pattern is meant to match ': "" ,' or ': [ "", ' where spaces are optional.
 # This is to strip things like '"key": "",' and '"key": [ "", "" ]'.
 #
 # NOTE! We intentionally don't match ': ""', to support '"X_end": ""'
