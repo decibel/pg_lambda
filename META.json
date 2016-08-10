@@ -7,7 +7,7 @@
     "name": "pg_lambda",
 
     "X_comment": "REQUIRED. Version of the distribution. http://pgxn.org/spec/#version",
-    "version": "1.0.4",
+    "version": "1.0.5",
 
     "X_comment": "REQUIRED. Short description of distribution.",
     "abstract": "Lambda function for Postgres",
@@ -32,7 +32,7 @@
             "file": "sql/lambda.sql",
 
             "X_comment": "REQUIRED. Version the extension is at.",
-            "version": "1.0.1",
+            "version": "1.0.5",
 
             "X_comment": "Optional: \"abstract\": Description of the extension.",
             "abstract": "Lambda function for Postgres",
