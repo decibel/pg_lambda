@@ -1,0 +1,4 @@
+\set ECHO none
+1..1
+ok 1 - Test simple addition function
+# TRANSACTION INTENTIONALLY LEFT OPEN!
